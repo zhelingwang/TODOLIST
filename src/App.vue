@@ -2,7 +2,10 @@
   <div class="layout">
     <Layout>
       <Content>
-        <h1 class="title">todos</h1>
+        <h1 class="title">
+          todos
+          <!-- <SendNotification /> -->
+        </h1>
         <Input
           class="row-input"
           placeholder="Enter content"
@@ -70,7 +73,10 @@ import {
   Icon,
   List
 } from "view-design";
+import SendNotification from "./SendNotification.vue";
 import { mapState, mapGetters, mapActions } from "vuex";
+import config from "./config.js";
+import tools from "./tools.js";
 
 export default {
   name: "App",
@@ -84,7 +90,8 @@ export default {
     Icon,
     Input,
     List,
-    ListItem: List.Item
+    ListItem: List.Item,
+    SendNotification
   },
   data: function() {
     return {
@@ -146,6 +153,7 @@ body {
   display: flex;
   margin-top: 100px;
   align-items: center;
+  padding: 0 20px;
 }
 .layout content {
   text-align: center;

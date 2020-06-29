@@ -9,6 +9,9 @@
                 "libraryName": "view-design",
                 "libraryDirectory": "src/components"
             }
+        ],
+        [
+            "@babel/transform-runtime"
         ]
     ]
 }

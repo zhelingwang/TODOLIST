@@ -1,9 +1,9 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import tools from "../tools.js"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-
     state: {
         todos: [{
             id: 0,
@@ -20,9 +20,13 @@ export default new Vuex.Store({
     mutations: {
         // payload:{ type:'addTodo',item:... }
         addTodo(state, payload) {
-            state.todos.push({
+            state.todos.unshift({
                 id: ++state.currentId,
                 ...payload.item
+            });
+            tools.notifyServerSendNotification({
+                text: 'add a new todo',
+                type: "ADD"
             });
         },
         removeTodo(state, payload) {
@@ -33,18 +37,32 @@ export default new Vuex.Store({
                     break;
                 }
             }
-            if (idx !== void 0 && state.todos.length > 0) state.todos.splice(idx, 1);
+            if (idx !== void 0 && state.todos.length > 0) {
+                state.todos.splice(idx, 1);
+                tools.notifyServerSendNotification({
+                    text: 'you remove a todo',
+                    type: "REMOVE"
+                });
+            }
         },
         changeCompleted(state, payload) {
             for (let i = 0, l = state.todos.length; i < l; i++) {
                 if (payload.id === state.todos[i].id) {
                     state.todos[i].completed = !state.todos[i].completed;
+                    tools.notifyServerSendNotification({
+                        text: 'you finished a todo',
+                        type: 'FINISHED'
+                    });
                     break;
                 }
             }
         },
         clearCompleted(state) {
-            state.todos = state.todos.filter(item => !item.completed)
+            state.todos = state.todos.filter(item => !item.completed);
+            tools.notifyServerSendNotification({
+                text: 'you cleared all completed todos',
+                type: 'CLEARALL'
+            });
         }
     },
     // can be async , {commit,dispatch} = context[this.$store]
