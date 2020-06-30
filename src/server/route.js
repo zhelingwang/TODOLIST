@@ -37,7 +37,7 @@ router.post('/sendNotification', async function (ctx, next) {
     };
     // console.log(ctx.request.body, '----', subscription);
     payloads[subscription.endpoint] = payload;
-    await webPush.sendNotification(subscription, null, options)
+    await webPush.sendNotification(subscription, "fake payload from webPush.sendNotification", options)
         .then(function () {
             ctx.response.status = 201;
             ctx.response.body = respondData();

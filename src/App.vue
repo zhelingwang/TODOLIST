@@ -153,7 +153,7 @@ body {
   display: flex;
   margin-top: 100px;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 .layout content {
   text-align: center;

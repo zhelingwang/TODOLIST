@@ -25,7 +25,7 @@ export default new Vuex.Store({
                 ...payload.item
             });
             tools.notifyServerSendNotification({
-                text: 'add a new todo',
+                text: 'add a new todo' + ' , title : ' + payload.item.text,
                 type: "ADD"
             });
         },
@@ -38,9 +38,9 @@ export default new Vuex.Store({
                 }
             }
             if (idx !== void 0 && state.todos.length > 0) {
-                state.todos.splice(idx, 1);
+                const deleteItem = state.todos.splice(idx, 1)[0];
                 tools.notifyServerSendNotification({
-                    text: 'you remove a todo',
+                    text: 'you remove a todo' + ' , title : ' + deleteItem.text,
                     type: "REMOVE"
                 });
             }
@@ -50,7 +50,7 @@ export default new Vuex.Store({
                 if (payload.id === state.todos[i].id) {
                     state.todos[i].completed = !state.todos[i].completed;
                     tools.notifyServerSendNotification({
-                        text: 'you finished a todo',
+                        text: 'you finished a todo' + ' , title : ' + state.todos[i].text,
                         type: 'FINISHED'
                     });
                     break;
