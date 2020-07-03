@@ -13,11 +13,16 @@
           autofocus
           @keyup.enter.native="handleAddClick"
         >
-          <Icon type="md-add-circle" slot="prefix" size="36" @click="handleAddClick" />
+          <Icon
+            type="md-add-circle"
+            slot="prefix"
+            size="36"
+            @click="handleAddClick"
+          />
         </Input>
         <List size="large">
           <template v-for="item in todos">
-            <template v-if="filter==='All' || filter===item.completed">
+            <template v-if="filter === 'All' || filter === item.completed">
               <ListItem v-bind:key="item.id">
                 <div>
                   <Icon
@@ -33,25 +38,36 @@
                     type="ios-checkmark-circle"
                     @click="handleChangeCompleted(item.id)"
                   />
-                  <span :class="item.completed ? 'uncompleted':''">{{item.id +"-"+ item.text}}</span>
+                  <span :class="item.completed ? 'uncompleted' : ''">{{
+                    item.id + "-" + item.text
+                  }}</span>
                 </div>
-                <Icon type="md-close" @click="handleCloseClick(item.id,$event)" />
+                <Icon
+                  type="md-close"
+                  @click="handleCloseClick(item.id, $event)"
+                />
               </ListItem>
             </template>
           </template>
 
           <ListItem class="state-item">
-            <div>{{unCompletedItemCount}} items left</div>
+            <div>{{ unCompletedItemCount }} items left</div>
             <div class="state-link">
-              <a :class="filter === 'All' ? 'active':''" @click="handleFilterClick('All')">All</a>
               <a
-                :class="filter !== 'All' && !filter ? 'active':''"
+                :class="filter === 'All' ? 'active' : ''"
+                @click="handleFilterClick('All')"
+                >All</a
+              >
+              <a
+                :class="filter !== 'All' && !filter ? 'active' : ''"
                 @click="handleFilterClick(false)"
-              >Active</a>
+                >Active</a
+              >
               <a
-                :class="filter !== 'All' && filter ? 'active':''"
+                :class="filter !== 'All' && filter ? 'active' : ''"
                 @click="handleFilterClick(true)"
-              >Completed</a>
+                >Completed</a
+              >
             </div>
             <a @click="handleClearCompleted">Clear Completed</a>
           </ListItem>
@@ -144,16 +160,23 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+}
 body {
   display: flex;
   justify-content: center;
 }
+body,
+.title {
+  /* background-color: #add5a2 !important; */
+}
 .layout {
   width: 550px;
-  display: flex;
   margin-top: 100px;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 5px;
 }
 .layout content {
   text-align: center;
@@ -161,7 +184,6 @@ body {
 
 .title {
   font-size: 64px;
-  background-color: white;
 }
 .row-input input {
   width: 100%;

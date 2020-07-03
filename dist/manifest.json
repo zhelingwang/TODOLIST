@@ -15,7 +15,7 @@
         }
     ],
     "name": "Awesome PWA",
-    "short_name": "ToDO",
+    "short_name": "ToDo",
     "start_url": "/index.html",
     "theme_color": "#ffffff"
 }

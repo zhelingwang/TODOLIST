@@ -6,7 +6,7 @@
     "build": "./node_modules/.bin/webpack --watch",
     "dev": "webpack-dev-server --open",
     "pro": "webpack --mode production",
-    "koa": "nodemon ./src/server/server.js"
+    "server": "nodemon ./src/server/server.js"
   },
   "keywords": [],
   "author": "",

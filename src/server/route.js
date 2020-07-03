@@ -43,8 +43,8 @@ router.post('/sendNotification', async function (ctx, next) {
             ctx.response.body = respondData();
         })
         .catch(function (error) {
-            ctx.response.status = 500;
-            ctx.response.body = respondData(500, error, null);
+            ctx.response.status = error.statusCode;
+            ctx.response.body = respondData(error.statusCode, error, null);
         });
 });
 
