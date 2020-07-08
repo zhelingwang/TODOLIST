@@ -1,8 +1,37 @@
 import Vuex from "vuex";
 import Vue from "vue";
 import tools from "../tools.js";
+import IDB from "./../IndexedDB/indexDB.js";
 Vue.use(Vuex);
 
+IDB.addData([
+  {
+    id: 0,
+    text: "hello world",
+    completed: false
+  },
+  {
+    id: 1,
+    text: "hello world",
+    completed: false
+  },
+  {
+    id: 2,
+    text: "world",
+    completed: false
+  }
+]);
+IDB.deleteData(1);
+IDB.queryData(2, function(data) {
+  console.log(data, "1");
+});
+IDB.queryDataAll(function(data) {
+  console.log(data, "all");
+});
+IDB.updateData(2, { id: "666", text: "ohuo", name: "updated name" });
+
+IDB.useCursor();
+IDB.useIndex();
 export default new Vuex.Store({
   state: {
     todos: [

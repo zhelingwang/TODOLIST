@@ -49,6 +49,7 @@ function update(request) {
 
 // 4.先响应缓存后请求以更新缓存 , 一旦更新则通知 UI 自动更新
 // 需要在缓存更新后出发 postMessage 事件来通知 UI 同步更新
-// sw.js[clients.postMessage] --> index.js[navigator.serviceWorker.onmessage]
+// sw.js[self.clients -> client.postMessage] --> index.js[navigator.serviceWorker.onmessage]
+// https://serviceworke.rs/strategy-cache-update-and-refresh_service-worker_doc.html
 
-// TODO: how to ensure sw use the newest version of file from cache
+// 5.内嵌一个回退的错误提示页面 : e.respondWith(promise.catch()) 捕获异常并new Response()返回一个404或error page

@@ -37,12 +37,13 @@ self.addEventListener("fetch", function(e) {
   // console.log('fetching...', e);
   if (e.request.method === "GET") {
     e.respondWith(
-      caches.match(e.request).then(function(r) {
-        // console.log('[Service Worker] Fetching resource: ' + e.request.url);
-        return (
-          r ||
-          fetch(e.request)
-            .then(function(response) {
+      caches
+        .match(e.request)
+        .then(function(r) {
+          // console.log('[Service Worker] Fetching resource: ' + e.request.url);
+          return (
+            r ||
+            fetch(e.request).then(function(response) {
               if (!response.ok) {
                 throw new Error("no such resource!");
               }
@@ -54,13 +55,12 @@ self.addEventListener("fetch", function(e) {
                 return response;
               });
             })
-            .catch(err => {
-              return caches.open(cacheName).then(function(cache) {
-                return cache.match("/offline.html");
-              });
-            })
-        );
-      })
+          );
+        })
+        .catch(_ => {
+          console.log(_, " --- fallback err");
+          return useFallback();
+        })
     );
   }
   if (e.request.method === "POST") {
@@ -71,6 +71,26 @@ self.addEventListener("fetch", function(e) {
 self.addEventListener("activate", function(event) {
   event.waitUntil(self.clients.claim()); // take controll
 });
+
+function useFallback() {
+  // return caches.open(cacheName).then(function(cache) {
+  //     return cache.match("/offline.html");
+  // });
+  const FALLBACK =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="180" stroke-linejoin="round">' +
+    '  <path stroke="#DDD" stroke-width="25" d="M99,18 15,162H183z"/>' +
+    '  <path stroke-width="17" fill="#FFF" d="M99,18 15,162H183z" stroke="#eee"/>' +
+    '  <path d="M91,70a9,9 0 0,1 18,0l-5,50a4,4 0 0,1-8,0z" fill="#aaa"/>' +
+    '  <circle cy="138" r="9" cx="100" fill="#aaa"/>' +
+    "</svg>";
+  return Promise.resolve(
+    new Response(FALLBACK, {
+      headers: {
+        "Content-Type": "image/svg+xml"
+      }
+    })
+  );
+}
 
 function getEndpoint() {
   return self.registration.pushManager
@@ -84,10 +104,10 @@ function getEndpoint() {
 }
 
 self.addEventListener("push", function(event) {
-  // 获取 payload 的方式一 :
+  // 获取 payload 的方式一 : 支持的格式还有 ArrayBuffer , Blob , JSON => event.data.arrayBuffer() / blob() / json()
   // const payload = event.data ? event.data.text() : 'no payload';
   // 此处 payload 来自 webPush.sendNotification(subscription, payload, options)
-  // console.log('ServiceWorker : received push event message : ', event.data.text());
+
   // tag作用 : 通知ID , 让你使用新通知代替旧通知或者将多个通知折叠成一个
   // 接收的不同消息需要不同的tag , 否则下一个相同tag的通知会替换旧通知(由于旧通知已经弹出过了,故复用该通知只会替换通知内容而不会再有重新弹出的动作)
   const tag = "TODOList-PWA-sample" + Math.random();

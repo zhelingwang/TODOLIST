@@ -7,57 +7,55 @@
 // Server.js 保存该subscription的payload数据到Server的某个内存变量payloads中并调用 webPush.sendNotification()
 // 触发 serviceWorker 中的 push 事件 , 再通过 subscription 对应的 endpoint 来获取payload 并调用 registration 的 showNotification
 
-// 一订阅subscription 
-// 二Server通过subscription调用sendNotification 
+// 一订阅subscription
+// 二Server通过subscription调用sendNotification
 // 三serviceWorker通过push来showNotification
 
-
 // 配合判断当前焦点是否在当前页面
-self.addEventListener('activate', function (event) {
-    // console.log('sw actived', event);
-    // 允许一个激活的 service worker 将自己设置为其scope 内所有 clients 的 controller 
-    // https://serviceworke.rs/push-clients_service-worker_doc.html
-    event.waitUntil(self.clients.claim);
+self.addEventListener("activate", function(event) {
+  // console.log('sw actived', event);
+  // 允许一个激活的 service worker 将自己设置为其scope 内所有 clients 的 controller
+  // https://serviceworke.rs/push-clients_service-worker_doc.html
+  event.waitUntil(self.clients.claim);
 });
 
-self.addEventListener('push', function (event) {
-    event.waitUntil(
-        self.clients.matchAll().then(function (clientList) {
-            var focused = clientList.some(function (client) {
-                return client.focused;
-            });
-            var notificationMessage;
-            if (focused) {
-                notificationMessage = 'You\'re still here, thanks!';
-            } else if (clientList.length > 0) {
-                notificationMessage = 'You haven\'t closed the page, ' +
-                    'click here to focus it!';
-            } else {
-                notificationMessage = 'You have closed the page, ' +
-                    'click here to re-open it!';
-            }
-            return self.registration.showNotification('ServiceWorker Cookbook', {
-                body: notificationMessage,
-            });
-        })
-    );
+self.addEventListener("push", function(event) {
+  event.waitUntil(
+    self.clients.matchAll().then(function(clientList) {
+      var focused = clientList.some(function(client) {
+        return client.focused;
+      });
+      var notificationMessage;
+      if (focused) {
+        notificationMessage = "You're still here, thanks!";
+      } else if (clientList.length > 0) {
+        notificationMessage =
+          "You haven't closed the page, " + "click here to focus it!";
+      } else {
+        notificationMessage =
+          "You have closed the page, " + "click here to re-open it!";
+      }
+      return self.registration.showNotification("ServiceWorker Cookbook", {
+        body: notificationMessage
+      });
+    })
+  );
 });
 
-self.addEventListener('notificationclick', function (event) {
-    console.log('notification clicked !!!');
-    event.waitUntil(
-        self.clients.matchAll().then(function (clientList) {
-            console.log(clientList, '++++');
-            if (clientList.length > 0) {
-                return clientList[0].focus();
-            }
-            return self.clients.openWindow("/index.html");
-        })
-    )
-})
+self.addEventListener("notificationclick", function(event) {
+  console.log("notification clicked !!!");
+  event.waitUntil(
+    self.clients.matchAll().then(function(clientList) {
+      console.log(clientList, "++++");
+      if (clientList.length > 0) {
+        return clientList[0].focus();
+      }
+      return self.clients.openWindow("/index.html");
+    })
+  );
+});
 
-
-// other events
-self.addEventListener('pushsubcriptionchange', function (event) {
-    event.waitUntil();
-})
+// other events , when subscription expires,  pushsubcriptionchange will be fired
+self.addEventListener("pushsubcriptionchange", function(event) {
+  event.waitUntil();
+});
