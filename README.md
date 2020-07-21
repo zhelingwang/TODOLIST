@@ -1,6 +1,6 @@
 # TODOLIST
 
-todolist demo with Webpack+Vue+iView(ViewUI/view-design)+Vuex
+todolist demo with Webpack+Vue+iView(ViewUI/view-design)+Vuex+serviceWorker+Web Push+indexedDB
 
 ## features
 
