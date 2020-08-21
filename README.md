@@ -25,3 +25,5 @@ todolist demo with Webpack+Vue+iView(ViewUI/view-design)+Vuex+serviceWorker+Web 
   - copy imgs , manifest.json and offline.html from src to dist folder
   - run `npm run dev`
   - close `new CleanWebpackPlugin()` in webpack.config.js
+
+change one
