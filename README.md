@@ -26,9 +26,3 @@ todolist demo with Webpack+Vue+iView(ViewUI/view-design)+Vuex+serviceWorker+Web 
   - run `npm run dev`
   - close `new CleanWebpackPlugin()` in webpack.config.js
 
-change one
-
-change two
-
-change three
-change four
